@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Hello world!</title>
+        <link href="styles/app.css" rel="stylesheet">
+        <link href="styles/default.css" rel="stylesheet">
+        <link href="img/favicon.ico" rel="shortcut icon">
+        <link href="https://fonts.googleapis.com/css?family=Ruda" rel="stylesheet">
+    </head>
+    <body>
+        <Loader />
+        <div class="table">
+        <div class="left-column">
+            <img src="img/zavr.jpg" alt="Zavr"/>
+            <Pages />
+        </div>
+        <div class="right-column">
+            {{ content }}
+        </div>
+        </div>
+        <footer>
+            &copy; {{ company }}, {{ year }}
+        </footer>
+        <script src="js/main.js"></script>
+    </body>
+</html>
