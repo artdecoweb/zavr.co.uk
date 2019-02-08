@@ -2,8 +2,8 @@
  * @type {import('splendid').Page}
  */
 export const main = {
-  title: 'Main Page',
+  title: 'zavr blog',
   url: 'index.html',
-  file: 'index.md',
+  file: 'index',
   menuUrl: '/',
 }

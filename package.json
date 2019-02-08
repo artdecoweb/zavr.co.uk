@@ -1,6 +1,14 @@
 {
   "scripts": {
     "start": "splendid-dev -s",
-    "build": "splendid-dev"
+    "build": "splendid-dev",
+    "e": "node example"
+  },
+  "devDependencies": {
+    "@idio/core": "1.3.0",
+    "alamode": "1.7.3",
+    "preact": "8.4.2",
+    "preact-render-to-string": "4.1.0",
+    "preact-router": "2.6.1"
   }
 }
