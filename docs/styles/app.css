@@ -95,3 +95,17 @@ footer {
     padding: 1em;
     border-top: 1px dashed;
 }
+
+.Figure {
+    padding:0.5rem;
+    background: lightgrey;
+    display:inline-block;
+    border-radius:0.5rem;
+    max-width: 100%;
+}
+.Figure img {
+    max-width: 100%;
+}
+.right-column > img {
+    max-width: 100%;
+}

@@ -19,13 +19,16 @@ render(h(Router,{},`
 I also made the demo preview of the `@depack/router` using _Splendid_ and had to update _Splendid_ to insert files manually with the `<File>` tag for the purpose of adding the source map to the website JavaScript bundle made with _Depack_. It will also now show an error if a page does not exist, and produce better JSX code highlighting with Prism, since highlightjs does not work with JSX.
 </p>
 
-<p style="padding:0.5rem; background: lightgrey; display:inline-block; border-radius:0.5rem;">
-<img src="img/2019/2-feb/appshot-Safari.gif" alt="Demo for @depack/router"><br>
-View the demo at [https://dpck.github.io/router/](https://dpck.github.io/router/)
-</p>
+<Figure img="img/2019/2-feb/appshot-Safari.gif"
+  alt="Demo for @depack/router">
+  View the demo at [https://dpck.github.io/router/](https://dpck.github.io/router/)
+</Figure>
 
 <p>
-Finally, in the spirit of starting to breath life into existing scopes and domains rather than creating new ones, I decided to use my existing `zavr.co.uk` domain to blog about work to keep track of the things that I've done. I had already done so on the [daily-log](https://github.com/artdecocode/daily-log) which was a GitHub blog compiled with _Documentary_, however I thought it would be a good use-case for _Splendid_ to compile a blog website, so that new features could emerge.
+In addition, I integrated the `@idio/frontend` package into the _Idio Core_ web server where it is possible to mount multiple frontend directories at once. There is an additional check to see if the pointed directory exists when starting the server. To sum up, the achievements of the day were moving most of the existing code into new packages, and integrating them into other tools (e.g., taking the router code out of `knedv.ru` website, putting it in a separate package and then installing that package into `knedv.ru` again). It is not always feasible to start making new packages straight away because when they need to be updated, the routine is more complicated when compared to the situation where the code is kept in the same package, but when the code has been somewhat manually tested, it can be made into separate software.
+</p>
+
+<p>Finally, in the spirit of starting to breath life into existing scopes and domains rather than creating new ones, I decided to use my existing `zavr.co.uk` domain to blog about work to keep track of the things that I've done. I had already done so on the [daily-log](https://github.com/artdecocode/daily-log) which was a GitHub blog compiled with _Documentary_, however I thought it would be a good use-case for _Splendid_ to compile a blog website, so that new features could emerge.
 </p>
 
 <p>
@@ -36,4 +39,5 @@ Unfortunately, the `depack` GitHub organisation was taken since summer which is 
 <ul>
  * Setup the front-end testing infrastructure by allowing _Zoroaster_ tests to have persistent context.
  * Update the structure in _Splendid_ to have components directory with the new AjaxMenu, don't override package.json if it exists, rework example pages.
+ * Come up with a web-interface where dependencies can be updated quickly, e.g., if I update `@a-la/jsx`, then `@idio/frontend` needs to be updated so that `@idio/core` can access the new feature or bugfix in the JSX. This is a requirement for _Moderne_, however can be implemented in MNPJS.org as well.
 </ul>
