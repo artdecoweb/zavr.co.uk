@@ -34,6 +34,46 @@
               </a>
             </p>
             
+            <h2>9 Saturday</h2>
+            
+            Today I picked up on the stuff from yesterday where the bugs in <em>Frontend</em> and <em>Depack</em> were identified. The main question that required thinking was how to compile <span class="tm">node_modules</span> in <em>Depack</em> that export JSX components. The strategy I though I would adopt was to not even build packages and publish their source code directly like its 2019, so that <em>Frontend</em> can serve them for development, and <em>Depack</em> can use them in compilation. However, the compilation step would require transpiling JSX syntax and putting new files in the temp directory, but also then overriding the import statements that import such packages to point them to the transpiled version of the code. The things become even more complicated when 3rd party packages also import JSX-based files. In future, a pass for Google Closure Compiler that understands JSX could be used, but for now, we want to focus our resources on development and in-field testing of <span class="tm2">@a-la/jsx</span>.
+            
+            <pre><code class="js hljs"><span class="hljs-comment">// index.jsx</span>
+<span class="hljs-keyword">import</span> { Form } <span class="hljs-keyword">from</span> <span class="hljs-string">'@depack/form'</span> <span class="hljs-comment">// resolves to jsx</span>
+
+<span class="hljs-comment">// @depack/form/src/index.jsx</span>
+<span class="hljs-keyword">export</span> { Input } <span class="hljs-keyword">from</span> <span class="hljs-string">'./Input'</span> <span class="hljs-comment">// Input needs transpiling</span></code></pre>
+            
+            The above example requires compiling <span class="tm">node_modules/@depack/form/src/index.jsx</span> and <span class="tm">node_modules/@depack/form/src/Input.jsx</span> and placing them in the temp folder, and rewiring <strong>index.js</strong> to rename <span class="tm">@depack/form</span> to <span class="tm">./temp/node_modules/@depack/form</span>. The solution that I tried was to detect dependencies in all node_modules
+             and transpile them, so that <span class="tm">Input.jsx</span> becomes <span class="tm">temp/Input.js</span> and feeding the files to the compiler. However, technically that was too cumbersome to implement and would involve repeating the transpilation job for every compilation, so the problem was approached from another end, that is to transpile packages in their own directories into modules to remove JSX syntax. <em>Depack</em> can then just read already compiled packages. That would allow packages to also be used by other bundlers, and simplified the whole process.
+            
+            <p>
+            Quite a bit of time was spent on trying to transpile node_modules
+            from <em>Depack</em> until this strategy was abandoned. A new package <span class="tm">@depack/detect</span> was created to hold code with <span class="tm">import</span> regular expressions to find out all dependencies in a file (moved from <em>Depack</em>). The alternative non-scoped name for that package was <span class="tm">muy-importante</span> from Family Guy because it's hilarious however I didn't do it but maybe will in future.
+            
+            <img style="display:block; padding: 1rem;" src="https://thumbs.gfycat.com/DarlingImprobableFly-max-1mb.gif" alt="Muy Importante">
+            
+            I also registered the <span class="tm2">static-analysis</span> package on NPM which is huge success, where I will move some code for detection and building of the dependency tree from <em>Depack</em>. Each new package with a significant name is a great contribution to Open Source, and in future it could be used to perform other static analysis including extracting JSDoc documentation. The static analysis is understanding the code without running it, and it has been somewhat what I've beed doing in the last months with Regular Expressions, which I use on daily basis, i.e. I've become specialised in their usage and recruited knowledge about specifics of how to use them effectively. It would be good to write an article "JS RegExp Hacks" for <strong>Art Deco</strong> website which will need professional content.
+            </p>
+            
+            <p>
+            I then updated <em>ÀLaMode</em> to be able to transpile JSX syntax without changing <span class="tm">import</span> and <span class="tm">export</span> to <span class="tm">require</span>, and transpiled <span class="tm">@depack/form</span> using this way. Finally, to test the new transpiled version, I updated <em>FrontEnd</em> to use correct logic for resolving <strong>package.json</strong> locations using <span class="tm2">fpj</span> (<em>Find Package Json</em>), and made the code much simpler. It's become a really good and stable package that I'm proud of so that I was really happy about it when published the last version. It's also innovative and could be popular among people to create an easy web development environment without having to use Webpack Dev Server and such.
+            </p>
+            
+            <h3>TODO</h3>
+            
+            <ul>
+            <li>Move code and tests from <em>Depack</em> to <span class="tm2">static-analysis</span> to build dependency tree.</li>
+            <li>Create an article outlining hacks on how to use regexes, e.g., using <span class="tm">string.replace</span> algorithm to avoid setting <span class="tm">lastIndex</span> on a RegExp, and remembering <span class="tm">before</span> and <span class="tm">after</span> matching groups to reconstruct the string with a substituted value.</li>
+            <li>Publish <em>FrontEnd</em> as <span class="tm">koa-frontend</span> and allow to plug in a custom JSX transpile function for those who want to use <em>Babel</em> instead of <em>ÀLamode</em> for that which can be less error-prone because although <span class="tm2">@a-la/jsx</span> transpiles JSX, there are limitations such as that there can't be <span class="tm">&gt;</span> or <span class="tm">&lt;</span> symbols in expressions and if people encounter any other problems, they won't be able to fix them as easily as I can when working on my projects.</li>
+            </ul>
+            
+            <p class="SectionBreak">
+              <a href="#top" title="Back To Top">
+                <img src="section-breaks/1.svg" alt="Back To Top">
+              </a>
+            </p>
+            
             <h2>8 Friday</h2>
             
             Today I worked more on the <em>Depack</em> infrastructure and had to figure out how to create a simple-to-write <strong>Form</strong> component for <em>Bootstrap</em>. The main puzzle was to understand how to pass properties to the children components from the parent component programmatically, e.g., we want to create a <span class="tm">form-group</span> which holds a label, input, hint and validation field so that the label points to the input with <span class="tm">htmlFor</span> attribute, and the input points to the hind with <span class="tm">aria-describedby</span> attribute. Those attributes need to be created by the form-group automatically, so that the syntax for writing forms can be concise:
@@ -106,7 +146,7 @@ h(<span class="hljs-string">'div'</span>, {}, <span class="hljs-string">`
             
             <p class="SectionBreak">
               <a href="#top" title="Back To Top">
-                <img src="section-breaks/1.svg" alt="Back To Top">
+                <img src="section-breaks/2.svg" alt="Back To Top">
               </a>
             </p>
             
@@ -167,7 +207,7 @@ render(h(Router,{},<span class="hljs-string">`
             
             <p class="SectionBreak">
               <a href="#top" title="Back To Top">
-                <img src="section-breaks/2.svg" alt="Back To Top">
+                <img src="section-breaks/3.svg" alt="Back To Top">
               </a>
             </p>
         </div>
