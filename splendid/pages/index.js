@@ -4,6 +4,6 @@
 export const main = {
   title: 'zavr blog',
   url: 'index.html',
-  file: 'index',
+  file: 'feb',
   menuUrl: '/',
 }

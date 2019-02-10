@@ -16,16 +16,15 @@
             <img src="img/zavr.jpg" alt="Zavr"/>
             <ul class="AjaxNav">
                 <li class="Active">
-                    <a data-file="index" href="/">zavr blog</a>
+                    <a data-file="feb" href="/">zavr blog</a>
                   </li>
               </ul>
         </div>
         <div class="right-column" id="Content">
             <h1>Zavr.co.uk 2019</h1>
-            
-            This is a javascript.dev blog.
-            
-            
+
+            <p>This is a javascript.dev blog.</p>
+
             <h2>7 February</h2>
             
             Today I've started to fill up the <strong>depack</strong> scope with packages on NPM by transferring existing work into it. The first two packages are <span class="tm">@depack/router</span> and <span class="tm">@depack/form</span> that were taken from the <span class="tm">knedv.ru</span> website. The router is the adaptation of the <span class="tm">preact-router</span> that was modified to work with <em>Depack</em>. The reason it wasn't working was because some properties were assigned on string nodes which threw an error, and also because <span class="tm2">__preactattr_</span> was referenced without using quotes and got mangled by the Closure Compiler.
@@ -80,6 +79,8 @@ render(h(Router,{},<span class="hljs-string">`
              <li>Update the structure in <em>Splendid</em> to have components directory with the new AjaxMenu, don't override package.json if it exists, rework example pages.</li>
              <li>Come up with a web-interface where dependencies can be updated quickly, e.g., if I update <span class="tm">@a-la/jsx</span>, then <span class="tm">@idio/frontend</span> needs to be updated so that <span class="tm">@idio/core</span> can access the new feature or bugfix in the JSX. This is a requirement for <em>Moderne</em>, however can be implemented in MNPJS.org as well.</li>
             </ul>
+            
+            
             
         </div>
         </div>
