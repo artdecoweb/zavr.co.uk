@@ -21,6 +21,7 @@ const config = {
     },
   ],
   output: BUILD_DIR,
+  url: 'https://zavr.co.uk',
 }
 
 export default config

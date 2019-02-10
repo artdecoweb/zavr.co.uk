@@ -14,6 +14,9 @@
         <div class="table">
         <div class="left-column">
             <img src="img/zavr.jpg" alt="Zavr"/>
+            <h1>Zavr.co.uk 2019</h1>
+
+            <p>This is a javascript.dev blog.</p>
             <ul class="AjaxNav">
                 <li class="Active">
                     <a data-file="feb" href="/">zavr blog</a>
@@ -21,11 +24,84 @@
               </ul>
         </div>
         <div class="right-column" id="Content">
-            <h1>Zavr.co.uk 2019</h1>
+            <h2>February</h2>
+            
+            The last month of winter!
+            
+            <p class="SectionBreak">
+              <a href="#top" title="Back To Top">
+                <img src="section-breaks/0.svg" alt="Back To Top">
+              </a>
+            </p>
+            
+            <h2>8 Friday</h2>
+            
+            Today I worked more on the <em>Depack</em> infrastructure and had to figure out how to create a simple-to-write <strong>Form</strong> component for <em>Bootstrap</em>. The main puzzle was to understand how to pass properties to the children components from the parent component programmatically, e.g., we want to create a <span class="tm">form-group</span> which holds a label, input, hint and validation field so that the label points to the input with <span class="tm">htmlFor</span> attribute, and the input points to the hind with <span class="tm">aria-describedby</span> attribute. Those attributes need to be created by the form-group automatically, so that the syntax for writing forms can be concise:
+            
+            <pre class="language-jsx"><code class="language-jsx"><span class="token operator">&lt;</span>Form<span class="token operator">></span>
+  <span class="token operator">&lt;</span>FormGroup label<span class="token operator">=</span><span class="token string">"Input"</span> help<span class="token operator">=</span><span class="token string">"Type in something..."</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>Input name<span class="token operator">=</span><span class="token string">"input"</span> value<span class="token operator">=</span><span class="token string">"hello-world"</span> <span class="token operator">/</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span><span class="token operator">/</span>FormGroup<span class="token operator">></span>
+  <span class="token operator">&lt;</span>FormGroup label<span class="token operator">=</span><span class="token string">"Select"</span> help<span class="token operator">=</span><span class="token string">"Please select..."</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>Select name<span class="token operator">=</span><span class="token string">"select"</span> value<span class="token operator">=</span><span class="token string">"2"</span> options<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">[</span>
+      <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Free will'</span><span class="token punctuation">,</span> value<span class="token punctuation">:</span> <span class="token string">'1'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Unfree will'</span><span class="token punctuation">,</span> value<span class="token punctuation">:</span> <span class="token string">'2'</span><span class="token punctuation">,</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span><span class="token operator">/</span>FormGroup<span class="token operator">></span>
+  <span class="token operator">&lt;</span>FormGroup label<span class="token operator">=</span><span class="token string">"TextArea"</span> help<span class="token operator">=</span><span class="token string">"Multiple row input..."</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>TextArea name<span class="token operator">=</span><span class="token string">"textarea"</span><span class="token operator">></span>
+      One must still have chaos <span class="token keyword">in</span> oneself to be able to give birth to a dancing star<span class="token punctuation">.</span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>TextArea<span class="token operator">></span>
+  <span class="token operator">&lt;</span><span class="token operator">/</span>FormGroup<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>Form<span class="token operator">></span></code></pre>
+            
+            In the example above, the <span class="tm">FormGroup</span> takes care of assigning the id and help-id to the label and input fields:
+            
+            <pre><code class="html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-group"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"i58483"</span>&gt;</span>Input<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
 
-            <p>This is a javascript.dev blog.</p>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"input"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-control"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">aria-describedby</span>=<span class="hljs-string">"hi58483"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"i58483"</span>&gt;</span>
 
-            <h2>7 February</h2>
+  <span class="hljs-tag">&lt;<span class="hljs-name">small</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"hi58483"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-text text-muted"</span>&gt;</span>Type in something...<span class="hljs-tag">&lt;/<span class="hljs-name">small</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+            
+            Because the documentation for Preact is lacking, the <span class="tm">getChildContext</span> is not present anywhere in the docs. I had to Google 100 times "pass properties to children" to see all available methods on the Internet, and when some were so advanced using the new <a href="https://github.com/valotas/preact-context">React Context API</a> that it was barely possible to grasp what they are actually doing and if it's going to affect how my forms are rendered. The first idea was to clone children components with <span class="tm">cloneElement</span> from <em>Preact</em> when rendering the <span class="tm">FormGroup</span> however that would be very inefficient because the input elements would not be reused by the virtual dom diffing which is the whole point of <em>Preact</em>. Finally, I found the <a href="https://github.com/synacor/preact-context-provider">generic context provider</a> that would allow to pass the properties to children in a context. I started to use it, but again I met the same problem as with the <span class="tm">preact-router</span> where blank text nodes were passed as children to the <span class="tm">&lt;Provider&gt;</span> which rendered only the first child. Therefore I realised that the problem is really in my JSX parser, which must do some string trimming rather than passing it to the pragma function for rendering:
+            
+            <pre><code class="js hljs">          <span class="hljs-comment">// ↓ must not pass the new line to pragma</span>
+h(<span class="hljs-string">'div'</span>, {}, <span class="hljs-string">`
+  `</span>,h(<span class="hljs-string">'a'</span>, {}),<span class="hljs-string">`
+`</span>)</code></pre>
+            
+            <p>The strings with new lines are there to preserve lines order because source maps for JSX transpiler are not there yet, however they can be <a href="https://github.com/a-la/jsx/issues/1">replaced with just whitespace</a> in code which is not going to be rendered. Nonetheless, the <span class="tm">&lt;Provider&gt;</span> component still rendered only a single child, because <em>Preact</em> does not have <span class="tm">&lt;&gt;</span> support. So I looked into the source code of the generic provider and found out that it uses the method called <span class="tm">getChildContext</span> which is exactly what I needed. Now I was able to pass required properties to the children in a context, and <em>a)</em> pass the auto-generated <strong>id</strong> and <strong>hid</strong> properties by the <span class="tm">FormGroup</span>; and <em>b)</em> pass the <strong>values</strong> property which is handled by the <span class="tm">Form</span> itself, so that the root <em>Form</em> component is able to handle the logic of maintaining the values for form inputs.</p>
+            
+            <p class="Figure">
+                <img src="img/2019/2-feb/form.gif" alt="Demo for @depack/form" /><br />
+                
+              View the demo at <a href="https://dpck.github.io/form/">https://dpck.github.io/form/</a>
+            
+              </p>
+            
+            <p>
+            The second part of the day after initial prototype of the form, was to put it in the <span class="tm">knedv.ru</span> website and see if it works. After I've done it, there were a few points that came up: first, the <span class="tm2">@idio/frontend</span> did not serve packages that were linked locally, because they resolved to paths like <span class="tm">../../depack/form</span> instead of <span class="tm">node_modules/@depack/form</span>. This was a disadvantage, however it could be temporary overcome by importing them via relative paths (i.e. <span class="tm">import { Form } from &apos;../../node_modules/@depack/form</span> instead of <span class="tm">import { Form } from &apos;@depack/form&apos;</span>). The second problem was to do with how <em>Depack</em> bundled packages, where JSX syntax was not transpiled, and no additional dependencies were not discovered in required node_modules
+            (only in source code). This didn't come up before because I only tried to compile simple code that imported <em>Preact</em> which also had no dependencies. Therefore, in the spirit of test-driven-development, I had to write tests for the bundler logic first and then implement the change that would facilitate that. To simplify the overall structure of <em>Depack</em>, I separated the bundler logic into the <span class="tm">@depack/bundle</span> package where I transferred the existing code. However, both compiler and bundler parts of <em>Depack</em> needed a method called <span class="tm2">findPackageJson</span>, so to share it between them, I created a separate package called <span class="tm">fpj</span> for <strong>Find Package Json</strong>. It finds the location of the <strong>package.json</strong> file for a given dependency that is required in a certain file. This will also help me in future to fix front-end bug that prevents serving linked packages, because the issue with it is that it uses <span class="tm">require.resolve</span> that returns absolute paths and not linked files.
+            </p>
+            
+            <h3>TODO</h3>
+            <ul>
+            
+            <li>Investigate <span class="tm">&lt;&gt;</span> support in JSX transpiler.</li>
+            <li>Allow to evoke a component with <span class="tm">&lt;this.component&gt;</span> and similar (with a dot) tags.</li>
+            <li>Remove white-spaces according to React's logic in the transpiler.</li>
+            
+            </ul>
+            
+            <p class="SectionBreak">
+              <a href="#top" title="Back To Top">
+                <img src="section-breaks/1.svg" alt="Back To Top">
+              </a>
+            </p>
+            
+            <h2>7 Thursday</h2>
             
             Today I've started to fill up the <strong>depack</strong> scope with packages on NPM by transferring existing work into it. The first two packages are <span class="tm">@depack/router</span> and <span class="tm">@depack/form</span> that were taken from the <span class="tm">knedv.ru</span> website. The router is the adaptation of the <span class="tm">preact-router</span> that was modified to work with <em>Depack</em>. The reason it wasn't working was because some properties were assigned on string nodes which threw an error, and also because <span class="tm2">__preactattr_</span> was referenced without using quotes and got mangled by the Closure Compiler.
             
@@ -80,8 +156,11 @@ render(h(Router,{},<span class="hljs-string">`
              <li>Come up with a web-interface where dependencies can be updated quickly, e.g., if I update <span class="tm">@a-la/jsx</span>, then <span class="tm">@idio/frontend</span> needs to be updated so that <span class="tm">@idio/core</span> can access the new feature or bugfix in the JSX. This is a requirement for <em>Moderne</em>, however can be implemented in MNPJS.org as well.</li>
             </ul>
             
-            
-            
+            <p class="SectionBreak">
+              <a href="#top" title="Back To Top">
+                <img src="section-breaks/2.svg" alt="Back To Top">
+              </a>
+            </p>
         </div>
         </div>
         <footer>

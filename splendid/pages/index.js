@@ -6,4 +6,5 @@ export const main = {
   url: 'index.html',
   file: 'feb',
   menuUrl: '/',
+  reverse: true,
 }
