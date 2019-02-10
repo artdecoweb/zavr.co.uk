@@ -102,6 +102,7 @@ footer {
     display:inline-block;
     border-radius:0.5rem;
     max-width: 100%;
+    text-shadow: 1px 1px #ebebeb;
 }
 .Figure img {
     max-width: 100%;
