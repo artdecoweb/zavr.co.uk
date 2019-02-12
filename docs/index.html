@@ -34,6 +34,23 @@
               </a>
             </p>
             
+            <h2>10 Sunday</h2>
+            
+            Today I focused on closing 2 issues in the JSX: trimming of new lines as React does, and allowing for JSX attributes. The job was fairly easy because the tests already existed, so that it was programming for results, i.e., to have an idea and quickly adjust the program to make it possible. I spent some amount of time on updating the <span class="tm">rexml</span> package to be able to extract XML attributes, and then integrated it in <em>JSX</em>, however I realised I could do the parsing without it by a generic algorithm, so although I released the change to <span class="tm">rexml</span>, it was not used in the end. Finally, I was happy to close the 2 issues created on GitHub, and I have to complete the other two within a week so that the package receives the positive ranking by NPM search which takes into account how many issues were closes within a certain period of time.
+            
+            <p>
+              Overall, I had a good week with getting back to blogging about work and tracking the process. Although I spent a bit of time on writing about what I've done in the previous day, it helps me to remember things I came across and note down the future <strong>todo</strong> points. The main job was to allow to bundle frontend packages with <em>Depack</em> and I discovered that it was more complicated than I though before because previously I didn't account for the fact that node_modules
+              packages could import other packages as well. I transferred the existing code into smaller packages, documented and tested them which is the correct strategy for utilising scopes and organisations.
+            </p>
+            
+            <img style="padding-top:1rem; display: block;" src="img/2019/2-feb/2-10-work.png">
+            
+            <p class="SectionBreak">
+              <a href="#top" title="Back To Top">
+                <img src="section-breaks/1.svg" alt="Back To Top">
+              </a>
+            </p>
+            
             <h2>9 Saturday</h2>
             
             Today I picked up on the stuff from yesterday where the bugs in <em>Frontend</em> and <em>Depack</em> were identified. The main question that required thinking was how to compile <span class="tm">node_modules</span> in <em>Depack</em> that export JSX components. The strategy I though I would adopt was to not even build packages and publish their source code directly like its 2019, so that <em>Frontend</em> can serve them for development, and <em>Depack</em> can use them in compilation. However, the compilation step would require transpiling JSX syntax and putting new files in the temp directory, but also then overriding the import statements that import such packages to point them to the transpiled version of the code. The things become even more complicated when 3rd party packages also import JSX-based files. In future, a pass for Google Closure Compiler that understands JSX could be used, but for now, we want to focus our resources on development and in-field testing of <span class="tm2">@a-la/jsx</span>.
@@ -70,7 +87,7 @@
             
             <p class="SectionBreak">
               <a href="#top" title="Back To Top">
-                <img src="section-breaks/1.svg" alt="Back To Top">
+                <img src="section-breaks/2.svg" alt="Back To Top">
               </a>
             </p>
             
@@ -146,7 +163,7 @@ h(<span class="hljs-string">'div'</span>, {}, <span class="hljs-string">`
             
             <p class="SectionBreak">
               <a href="#top" title="Back To Top">
-                <img src="section-breaks/2.svg" alt="Back To Top">
+                <img src="section-breaks/3.svg" alt="Back To Top">
               </a>
             </p>
             
@@ -207,7 +224,7 @@ render(h(Router,{},<span class="hljs-string">`
             
             <p class="SectionBreak">
               <a href="#top" title="Back To Top">
-                <img src="section-breaks/3.svg" alt="Back To Top">
+                <img src="section-breaks/4.svg" alt="Back To Top">
               </a>
             </p>
         </div>
