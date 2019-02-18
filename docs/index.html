@@ -26,24 +26,75 @@
             
             <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/-3.svg" alt="Back To Top" /></a></p>
             
+            <h2>14 Thursday</h2>
             
+            First thing on Thursday was refactoring some components in <em>Splendid</em> into being JSX components, including the <span class="tm2">&lt;SectionBreak/&gt;</span>, <span class="tm2">&lt;File/&gt;</span> and <span class="tm2">&lt;PageTitle/&gt;</span>. The new architecture to use JSX is better than simple regular expressions, because it's more idiosyncratic and could eventually help to write components for dynamic front-end as well, such as embedding them with <em>Preact</em>. It's also easier to maintain and document, however there is still an issue that the autosuggestions for component properties do not appear in the pages source code, however this could only be overcome by making all pages JSX components which is opposite to the goal of <em>Splendid</em> that allows to write simple HTML and markdown but embed components. Nonetheless, the new components looks much better, compare:
+            
+            <pre><code class="js hljs"><span class="hljs-comment">// The old way</span>
+<span class="hljs-keyword">import</span> rexml <span class="hljs-keyword">from</span> <span class="hljs-string">'rexml'</span>
+<span class="hljs-keyword">const</span> breaksRule = {
+  <span class="hljs-attr">re</span>: <span class="hljs-regexp">/( *)(&lt;SectionBreak.*?\/&gt;)/gm</span>,
+  replacement(m, ws, SectionBreak) {
+    <span class="hljs-keyword">const</span> [{
+      <span class="hljs-attr">props</span>: { width, <span class="hljs-attr">id</span>: i = <span class="hljs-keyword">this</span>.breaksCount, alt = <span class="hljs-string">'Back To Top'</span>, href = <span class="hljs-string">'#top'</span> }
+    }] = rexml(<span class="hljs-string">'SectionBreak'</span>, SectionBreak)
+    <span class="hljs-keyword">const</span> id = <span class="hljs-built_in">parseInt</span>(i || <span class="hljs-string">'0'</span>)
+    <span class="hljs-keyword">const</span> w = width ? <span class="hljs-string">` width="<span class="hljs-subst">${width}</span>"`</span> : <span class="hljs-string">''</span>
+    <span class="hljs-keyword">const</span> res = <span class="hljs-string">`&lt;p class="SectionBreak"&gt;
+  &lt;a href="<span class="hljs-subst">${href}</span>" title="<span class="hljs-subst">${alt}</span>"&gt;
+    &lt;img src="splendid://section-breaks/<span class="hljs-subst">${id}</span>.svg" alt="<span class="hljs-subst">${alt}</span>"<span class="hljs-subst">${w}</span>&gt;
+  &lt;/a&gt;
+&lt;/p&gt;`</span>
+    <span class="hljs-keyword">this</span>.breaksCount = id + <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> res.replace(<span class="hljs-regexp">/^/gm</span>, ws)
+  },
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> breaksRule</code></pre>
+            
+            <pre class="language-jsx"><code class="language-jsx"><span class="token comment">// The new way</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">SectionBreak</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  width<span class="token punctuation">,</span> alt <span class="token operator">=</span> <span class="token string">'Back To Top'</span><span class="token punctuation">,</span> href <span class="token operator">=</span> <span class="token string">'#top'</span><span class="token punctuation">,</span>
+  splendid<span class="token punctuation">,</span> id<span class="token punctuation">:</span> i <span class="token operator">=</span> splendid<span class="token punctuation">.</span>breaksCount<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> id <span class="token operator">=</span> <span class="token function">parseInt</span><span class="token punctuation">(</span>i <span class="token operator">||</span> <span class="token string">'0'</span><span class="token punctuation">)</span>
+  splendid<span class="token punctuation">.</span>breaksCount <span class="token operator">=</span> id <span class="token operator">+</span> <span class="token number">1</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>p className<span class="token operator">=</span><span class="token string">"SectionBreak"</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>a href<span class="token operator">=</span><span class="token punctuation">{</span>href<span class="token punctuation">}</span> title<span class="token operator">=</span><span class="token punctuation">{</span>alt<span class="token punctuation">}</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>img src<span class="token operator">=</span><span class="token punctuation">{</span><span class="token template-string"><span class="token string">`splendid://section-breaks/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>id<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">.svg`</span></span><span class="token punctuation">}</span>
+        alt<span class="token operator">=</span><span class="token punctuation">{</span>alt<span class="token punctuation">}</span> width<span class="token operator">=</span><span class="token punctuation">{</span>width<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>a<span class="token operator">></span>
+  <span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre>
+            
+            <p>JSX Components are also nicer to test and will help me to derive the infrastructure for testing frontend software. I choose the testing strategy that would involve rendering the components using <span class="tm">preact-render-to-string</span> as the initial unit tests. However, I was not happy with the fact that this package is dependent on the <strong>pretty-format</strong> package which belongs to Facebook and also pulls the <span class="tm">strip-ansi</span> package downloads counter of which I don't want to increase (I don't like popular packages). Therefore, I forked it and made a new package for rendering server-side HTML called <em>Depack/Render</em>. The main advantage of doing that is that I understood more how server-side rendering is done in <em>Preact</em>, and made some modifications myself. In particular, I improved the <strong>pretty printing</strong> functionality which in original <em>Preact/Render</em> would put each new attribute on the new line which is not feasible for documentation. Earlier this week, I wrote a simple script to format HTML, however it was error-prone and approached the problem from outside of the black "rendering" box, whereas modifying the actual rendering logic is getting inside of that box and having more control of what's happening. This made the previous script for formatting HTML redundant, however I was then able to compile <em>Depack/Form</em> documentation with <em>Depack/Render</em> and it was nicely presented like I wanted it to.</p>
+            
+            <p>There were some bugs I found out about in the <a href="https://npmjs.com/package/@a-la/jsx" class="Badge"><span class="name"><em>À-La/JSX</em></span><span class="version">1.4.0</span></a> such as that boolean attributes were assigned the value of <strong>1</strong> rather than an empty value, which <em>Preact</em> rendering was expecting, e.g., the <span class="tm">&lt;input required&gt;</span> would be incorrectly rendered as <span class="tm">&lt;input required=&quot;1&quot;&gt;</span>. And exactly because I forked <em>Preact/Render</em> and studied the source code while modifying it for my <em>Depack/Render</em> fork I was able to identify this problem. The second bug was discovered when writing unit-tests and involved JSX package only processing a single boolean attribute where there could be any number of them. The problem was solved with a single <span class="tm">g</span> modifier to the RegExp.</p>
+            
+            <a href="https://github.com/a-la/jsx/commit/d76d56b5f318a14523053fb3a7afe9ef081c55ba"><img src="img/2019/2-feb/git.jpg" /></a>
+            
+            <div><input id="7083" type="checkbox" /> <label for="7083">When counting the line length in <em>Depack/Render</em>, the whitespace before the line should also be considered.</label></div>
+            <div><input id="5616" type="checkbox" /> <label for="5616">Load CSS from components' source code into the page source.</label></div>
+            <div><input id="977" type="checkbox" /> <label for="977">Write documentation for <em>Splendid</em> components.</label></div>
+            
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/0.svg" alt="Back To Top" /></a></p>
             
             <h2>13 Wednesday</h2>
             
-            <p>On Wednesday, I started by adding two badges to the website, the <span class="tm">NPMBadge</span> and <span class="tm">GitHub</span> badge, which were implmeneted as components. There was also a <span class="tm">SelfBadge</span> which would read information from the <span class="tm">package.json</span> of the package for which the website is made with <em>Splendid</em> and display the correct information there.</p>
+            <p>On Wednesday, I started by adding two badges to the website, the <span class="tm">NPMBadge</span> and <span class="tm">GitHub</span> badge, which were implemented as components. There was also a <span class="tm">SelfBadge</span> which would read information from the <span class="tm">package.json</span> of the package for which the website is made with <em>Splendid</em> and display the correct information there. The components are also made to be <strong>async</strong> now so that they can execute some asynchronous operation before their rendering. This type of JSX components is only made for <em>Splendid</em> and cannot be used in other JSX components.</p>
             
             <img src="img/2019/2-feb/version.png">
             
-            <p>I then worked more on <em>Splendid</em> to enable correct AJAX behaviour when a page is mounted not on the root of the domain, e.g., <a href="https://dpck.github.io/form/">https://dpck.github.io/form/</a>. It required an update the the frontend <strong>ajax-loader.js</strong> script, which would receive the <span class="tm">root</span> property from the <em>Splendid</em> config, and load the page from there. Otherwise, webpages were attempted to always load from the root which GitHub pages does not allow. An update to the <em>Splendid</em> core was also required to tell the development server to serve files from the specified mount point.</p>
+            <p>I then worked more on <em>Splendid</em> to enable correct AJAX behaviour when a page is mounted not on the root of the domain, e.g., <a href="https://dpck.github.io/form/">https://dpck.github.io/form/</a>. It required an update the the frontend <strong>ajax-loader.js</strong> script, which would receive the <span class="tm">root</span> property from the <em>Splendid</em> config, and load the page from there. Otherwise, webpages were attempted to always load from the root which GitHub pages does not allow. An update to the <em>Splendid</em> core was also required to tell the development server to serve files from the specified mount point. Another learning outcome is to compile AJAX library as the IIFE in isolation mode to prevent the overriding of scoped functions by other scripts. For example, the compiled AJAX code has the function named <span class="tm">x</span>, and the demo source code had the same function since they're both compiled with Google Closure Compiler, but because the latter was added at a later point, it would override the original <span class="tm">x</span> function and prevent AJAX navigation from working.</p>
             
             <p>Finally, I've finished documenting the <span class="tm">logarithm</span> software and published it on the NPM. The middleware allows to log each request's information into ElasticSearch. It was also compiled with <em>Depack</em> to ensure to install only dependencies for the API version of the package. I then enabled <em>Logarithm</em> on the <span class="tm2">knedv.ru</span> website, and I could see the visitors to the developments server (i.e., me) in the Kibana dashboard.</p>
             
             <p class="Figure"><img src="img/2019/2-feb/appshot-Chrome-kibana.gif" alt="Kibana Logs For Logarithm" /><br /><em>Logarithm</em> Middleware sends data about requests to the ElasticSearch. The portal is implemented as patched OSS <a href="https://github.com/dockspage/kibana-docker">Kibana with authentication</a>.</p>
             
-            <div><input id="9700" type="checkbox" /> <label for="9700">Make an interactive component for <span class="tm">NPMBadge</span> that would show package information on hover (or do it with CSS).</label></div>
-            <div><input id="7123" type="checkbox" /> <label for="7123">Update <em>Logarithm</em> to understand encoded characters.</label></div>
+            <div><input id="6610" type="checkbox" /> <label for="6610">Make an interactive component for <span class="tm">NPMBadge</span> that would show package information on hover (or do it with CSS).</label></div>
+            <div><input id="904" type="checkbox" /> <label for="904">Update <em>Logarithm</em> to understand encoded characters.</label></div>
             
-            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/-2.svg" alt="Back To Top" /></a></p>
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/1.svg" alt="Back To Top" /></a></p>
             
             <h2>12 Tuesday</h2>
             
@@ -78,10 +129,10 @@
             
             <h2>ToDo</h2>
             
-            <div><input id="5537" type="checkbox" /> <label for="5537">Make it possible to generate modules to put on the static HTML server such as GitHub pages with Depack without bundling them into a single file. This includes supplying imports like <span class="tm">preact</span> with the source code in a separate file, as well is updating relative paths. This is partly what generating the temp directory does already.</label></div>
-            <div><input id="8900" type="checkbox" /> <label for="8900">Teach <em>Splendid</em> to extract <span class="tm">&lt;Scripts&gt;</span> components to make it work better with Ajax by updating the <span class="tm">ajax</span> version of generated pages to have the <span class="tm">scripts</span> field in addition to the page's in-container <span class="tm">source</span> and <span class="tm">title</span>.</label></div>
+            <div><input id="8733" type="checkbox" /> <label for="8733">Make it possible to generate modules to put on the static HTML server such as GitHub pages with Depack without bundling them into a single file. This includes supplying imports like <span class="tm">preact</span> with the source code in a separate file, as well is updating relative paths. This is partly what generating the temp directory does already.</label></div>
+            <div><input id="2607" type="checkbox" /> <label for="2607">Teach <em>Splendid</em> to extract <span class="tm">&lt;Scripts&gt;</span> components to make it work better with Ajax by updating the <span class="tm">ajax</span> version of generated pages to have the <span class="tm">scripts</span> field in addition to the page's in-container <span class="tm">source</span> and <span class="tm">title</span>.</label></div>
             
-            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/-1.svg" alt="Back To Top" /></a></p>
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/2.svg" alt="Back To Top" /></a></p>
             
             
             <h2>11 Monday</h2>
@@ -175,7 +226,7 @@
             <li>Add an article on Medium about how to add JSDoc for Preact class components without using TypeScript.</li>
             </ul>
             
-            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/0.svg" alt="Back To Top" /></a></p>
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/3.svg" alt="Back To Top" /></a></p>
         </div>
         </div>
         <footer>
