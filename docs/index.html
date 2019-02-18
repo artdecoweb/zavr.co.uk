@@ -17,24 +17,72 @@
             <h1>Zavr.co.uk 2019</h1>
 
             <p>This is a javascript.dev blog.</p>
-            <ul class="AjaxNav">
-                <li class="Active">
-                    <a data-file="11-17-february" href="/">zavr blog</a>
-                  </li><li class>
-                    <a data-file="4-10-february" href="4-10-february.html">4-10 February 2019</a>
-                  </li>
-              </ul>
+            <ul class="AjaxNav"><li class="Active"><a data-file="11-17-february" href="/">zavr blog</a></li><li class><a data-file="4-10-february" href="4-10-february.html">4-10 February 2019</a></li></ul>
         </div>
         <div class="right-column" id="Content">
             <h2>11-17 February</h2>
             
             The job for this week is to finish work on <em>Depack</em>, document the frontend bundler part of it, and add the possibility to override Node.js builtin externs. The message about it can then be spread on the Google Closure Compiler group and Medium. After that, <em>Zoroaster</em> can be modified to have persistent contexts and test frontend Preact packages that I have and will make (<span class="tm2">router</span> and <span class="tm2">form</span>). On the 15<sup>th</sup>, the call for papers for <a href="https://jscamp.tech/">JSCamp in Barcelona</a> opens, so I will apply to that with the story about <em>Depack</em> and <em>Frontend</em>, which could hopefully be useful to others.
             
-            <p class="SectionBreak">
-              <a href="#top" title="Back To Top">
-                <img src="section-breaks/-3.svg" alt="Back To Top">
-              </a>
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/-3.svg" alt="Back To Top" /></a></p>
+            
+            
+            
+            <h2>13 Wednesday</h2>
+            
+            <p>On Wednesday, I started by adding two badges to the website, the <span class="tm">NPMBadge</span> and <span class="tm">GitHub</span> badge, which were implmeneted as components. There was also a <span class="tm">SelfBadge</span> which would read information from the <span class="tm">package.json</span> of the package for which the website is made with <em>Splendid</em> and display the correct information there.</p>
+            
+            <img src="img/2019/2-feb/version.png">
+            
+            <p>I then worked more on <em>Splendid</em> to enable correct AJAX behaviour when a page is mounted not on the root of the domain, e.g., <a href="https://dpck.github.io/form/">https://dpck.github.io/form/</a>. It required an update the the frontend <strong>ajax-loader.js</strong> script, which would receive the <span class="tm">root</span> property from the <em>Splendid</em> config, and load the page from there. Otherwise, webpages were attempted to always load from the root which GitHub pages does not allow. An update to the <em>Splendid</em> core was also required to tell the development server to serve files from the specified mount point.</p>
+            
+            <p>Finally, I've finished documenting the <span class="tm">logarithm</span> software and published it on the NPM. The middleware allows to log each request's information into ElasticSearch. It was also compiled with <em>Depack</em> to ensure to install only dependencies for the API version of the package. I then enabled <em>Logarithm</em> on the <span class="tm2">knedv.ru</span> website, and I could see the visitors to the developments server (i.e., me) in the Kibana dashboard.</p>
+            
+            <p class="Figure"><img src="img/2019/2-feb/appshot-Chrome-kibana.gif" alt="Kibana Logs For Logarithm" /><br /><em>Logarithm</em> Middleware sends data about requests to the ElasticSearch. The portal is implemented as patched OSS <a href="https://github.com/dockspage/kibana-docker">Kibana with authentication</a>.</p>
+            
+            <div><input id="9700" type="checkbox" /> <label for="9700">Make an interactive component for <span class="tm">NPMBadge</span> that would show package information on hover (or do it with CSS).</label></div>
+            <div><input id="7123" type="checkbox" /> <label for="7123">Update <em>Logarithm</em> to understand encoded characters.</label></div>
+            
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/-2.svg" alt="Back To Top" /></a></p>
+            
+            <h2>12 Tuesday</h2>
+            
+            <p>Today I worked on documentation of the <em>Depack/Form</em> package, and improved the formatting of HTML. The examples now also use the seeded random number generator that prevented updating of <span class="tm">id</span> values each time the documentation generator is run. I finished documenting every component and described writing custom components.
+            <br>
+            At night, during working on the website to close <a href="https://github.com/dpck/form/issues/1">#1</a>, I encountered the problem with the website generation where the demo would not re-render after AJAX navigation, because scripts dynamically added to the page via setting <span class="tm">innerHTML</span> on the container component do not execute. I went on to research the possible solutions and found the thread on <em>StackOverflow</em> describing how to solve the problem, by extracting the scripts using the regular expressions. <a href="https://github.com/artdecocode/splendid/blob/master/src/js/ajax-loader/index.js#L96">The change</a> had to be made to <em>Splendid</em> so that received scripts are executed. The adaptation to the original script was made to enable executing scripts with <span class="tm">module</span> type. The source maps for the <em>AJAX</em> library was also added to enable debugging, as well as source maps for the bundle Depack/Form compiled with <em>Depack</em>.</p>
+            
+            <pre><code class="js hljs"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">stripAndExecuteScript</span>(<span class="hljs-params">text</span>) </span>{
+  <span class="hljs-keyword">var</span> scripts = <span class="hljs-string">''</span>
+  <span class="hljs-keyword">var</span> modules = []
+  <span class="hljs-keyword">var</span> cleaned = text.replace(<span class="hljs-regexp">/&lt;script([^&gt;]*)&gt;([\s\S]*?)&lt;\/script&gt;/gi</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">m, tags, script</span>)</span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/type="module"/</span>.test(tags)) {
+      modules.push(script)
+      <span class="hljs-keyword">return</span>
+    }
+    scripts += script + <span class="hljs-string">'\n'</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">''</span>
+  })
+
+  modules.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">mod</span>) </span>{
+    makeScript(mod, <span class="hljs-literal">true</span>)
+  })
+
+  makeScript(scripts)
+}</code></pre>
+            
+            <img src="img/2019/2-feb/form.png" alt="Depack/Form Demo">
+            
+            <p>
+            On the about page, the <em>Depack/Form</em> demo is loaded from the compiled bundle made with <em>Depack</em>, whereas The <span class="tm">Modules Demo</span> page on the website loads the source code via modules. It was made to show the possibility of executing the javascript source code via the native browser functionality in modern browsers. It helped to discover a use case of when one would need to collect all dependencies' source files into a single directory which can be served by a CDN for example.
             </p>
+            
+            <h2>ToDo</h2>
+            
+            <div><input id="5537" type="checkbox" /> <label for="5537">Make it possible to generate modules to put on the static HTML server such as GitHub pages with Depack without bundling them into a single file. This includes supplying imports like <span class="tm">preact</span> with the source code in a separate file, as well is updating relative paths. This is partly what generating the temp directory does already.</label></div>
+            <div><input id="8900" type="checkbox" /> <label for="8900">Teach <em>Splendid</em> to extract <span class="tm">&lt;Scripts&gt;</span> components to make it work better with Ajax by updating the <span class="tm">ajax</span> version of generated pages to have the <span class="tm">scripts</span> field in addition to the page's in-container <span class="tm">source</span> and <span class="tm">title</span>.</label></div>
+            
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/-1.svg" alt="Back To Top" /></a></p>
+            
             
             <h2>11 Monday</h2>
             
@@ -66,21 +114,13 @@
   <span class="hljs-comment">/* ... methods */</span>
 }</code></pre>
             
-            <p class="Figure">
-                <img src="img/2019/2-feb/ap.gif" alt="JSX in VSCode For JSX Components Classes" /><br />
-                
-              </p>
+            <p class="Figure"><img src="img/2019/2-feb/ap.gif" alt="JSX in VSCode For JSX Components Classes" /><br /></p>
             
             <p>
             The props can then also be used in the documentation by simply calling <span class="tm">%TYPEDEF types/index.xml FormGroupProps%</span> which <em>Documentary</em> understands. This help to discover the bug which I then fixed in <em>Documentary</em> when types tables referenced by name after the first one were not inserted.
             </p>
             
-            <p class="Figure">
-                <img src="img/2019/2-feb/doc.png" alt="GitHub Documentation" /><br />
-                
-            View <em>Form</em> documentation at <a href="https://github.com/dpck/form">https://github.com/dpck/form</a>
-              
-              </p>
+            <p class="Figure"><img src="img/2019/2-feb/doc.png" alt="GitHub Documentation" /><br />View <em>Form</em> documentation at <a href="https://github.com/dpck/form">https://github.com/dpck/form</a></p>
             
             <p>
             Towards the end of the day, I spent some time on writing an HTML formatter, because after I removed passing new lines as strings to the JSX pragma (see previous week), the <span class="tm">preact-render-to-string</span> package started to render the code without indentations which was hard to read and not suitable for the documentation. Therefore, I made a simple at-first function that split tags at <span class="tm">&gt;&lt;</span> point and inserted new lines between them. It was then modified to account for opening and closing tags, as well as if the tag is a textarea element which means there cannot be any new lines. I then had a neat function which also indented attributes after the line width became too large, and presented all example HTML output of the <em>Form</em> component in a nice way:
@@ -135,11 +175,7 @@
             <li>Add an article on Medium about how to add JSDoc for Preact class components without using TypeScript.</li>
             </ul>
             
-            <p class="SectionBreak">
-              <a href="#top" title="Back To Top">
-                <img src="section-breaks/0.svg" alt="Back To Top">
-              </a>
-            </p>
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/0.svg" alt="Back To Top" /></a></p>
         </div>
         </div>
         <footer>

@@ -17,24 +17,14 @@
             <h1>Zavr.co.uk 2019</h1>
 
             <p>This is a javascript.dev blog.</p>
-            <ul class="AjaxNav">
-                <li class>
-                    <a data-file="11-17-february" href="/">zavr blog</a>
-                  </li><li class="Active">
-                    <a data-file="4-10-february" href="4-10-february.html">4-10 February 2019</a>
-                  </li>
-              </ul>
+            <ul class="AjaxNav"><li class><a data-file="11-17-february" href="/">zavr blog</a></li><li class="Active"><a data-file="4-10-february" href="4-10-february.html">4-10 February 2019</a></li></ul>
         </div>
         <div class="right-column" id="Content">
             <h2>February</h2>
             
             The last month of winter!
             
-            <p class="SectionBreak">
-              <a href="#top" title="Back To Top">
-                <img src="section-breaks/0.svg" alt="Back To Top">
-              </a>
-            </p>
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/0.svg" alt="Back To Top" /></a></p>
             
             <h2>10 Sunday</h2>
             
@@ -47,11 +37,7 @@
             
             <img style="padding-top:1rem; display: block;" src="img/2019/2-feb/2-10-work.png">
             
-            <p class="SectionBreak">
-              <a href="#top" title="Back To Top">
-                <img src="section-breaks/1.svg" alt="Back To Top">
-              </a>
-            </p>
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/1.svg" alt="Back To Top" /></a></p>
             
             <h2>9 Saturday</h2>
             
@@ -87,11 +73,7 @@
             <li>Publish <em>FrontEnd</em> as <span class="tm">koa-frontend</span> and allow to plug in a custom JSX transpile function for those who want to use <em>Babel</em> instead of <em>ÀLamode</em> for that which can be less error-prone because although <span class="tm2">@a-la/jsx</span> transpiles JSX, there are limitations such as that there can't be <span class="tm">&gt;</span> or <span class="tm">&lt;</span> symbols in expressions and if people encounter any other problems, they won't be able to fix them as easily as I can when working on my projects.</li>
             </ul>
             
-            <p class="SectionBreak">
-              <a href="#top" title="Back To Top">
-                <img src="section-breaks/2.svg" alt="Back To Top">
-              </a>
-            </p>
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/2.svg" alt="Back To Top" /></a></p>
             
             <h2>8 Friday</h2>
             
@@ -133,12 +115,7 @@ h(<span class="hljs-string">'div'</span>, {}, <span class="hljs-string">`
             
             <p>The strings with new lines are there to preserve lines order because source maps for JSX transpiler are not there yet, however they can be <a href="https://github.com/a-la/jsx/issues/1">replaced with just whitespace</a> in code which is not going to be rendered. Nonetheless, the <span class="tm">&lt;Provider&gt;</span> component still rendered only a single child, because <em>Preact</em> does not have <span class="tm">&lt;&gt;</span> support. So I looked into the source code of the generic provider and found out that it uses the method called <span class="tm">getChildContext</span> which is exactly what I needed. Now I was able to pass required properties to the children in a context, and <em>a)</em> pass the auto-generated <strong>id</strong> and <strong>hid</strong> properties by the <span class="tm">FormGroup</span>; and <em>b)</em> pass the <strong>values</strong> property which is handled by the <span class="tm">Form</span> itself, so that the root <em>Form</em> component is able to handle the logic of maintaining the values for form inputs.</p>
             
-            <p class="Figure">
-                <img src="img/2019/2-feb/form.gif" alt="Demo for @depack/form" /><br />
-                
-              View the demo at <a href="https://dpck.github.io/form/">https://dpck.github.io/form/</a>
-            
-              </p>
+            <p class="Figure"><img src="img/2019/2-feb/form.gif" alt="Demo for @depack/form" /><br />View the demo at <a href="https://dpck.github.io/form/">https://dpck.github.io/form/</a></p>
             
             <p>
             The second part of the day after initial prototype of the form, was to put it in the <span class="tm">knedv.ru</span> website and see if it works. After I've done it, there were a few points that came up: first, the <span class="tm2">@idio/frontend</span> did not serve packages that were linked locally, because they resolved to paths like <span class="tm">../../depack/form</span> instead of <span class="tm">node_modules/@depack/form</span>. This was a disadvantage, however it could be temporary overcome by importing them via relative paths (i.e. <span class="tm">import { Form } from &apos;../../node_modules/@depack/form</span> instead of <span class="tm">import { Form } from &apos;@depack/form&apos;</span>). The second problem was to do with how <em>Depack</em> bundled packages, where JSX syntax was not transpiled, and no additional dependencies were  discovered in required <strong>node_modules</strong>
@@ -163,11 +140,7 @@ h(<span class="hljs-string">'div'</span>, {}, <span class="hljs-string">`
             
             </ul>
             
-            <p class="SectionBreak">
-              <a href="#top" title="Back To Top">
-                <img src="section-breaks/3.svg" alt="Back To Top">
-              </a>
-            </p>
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/3.svg" alt="Back To Top" /></a></p>
             
             <h2>7 Thursday</h2>
             
@@ -199,12 +172,7 @@ render(h(Router,{},<span class="hljs-string">`
             I also made the demo preview of the <span class="tm">@depack/router</span> using <em>Splendid</em> and had to update <em>Splendid</em> to insert files manually with the <span class="tm">&lt;File&gt;</span> tag for the purpose of adding the source map to the website JavaScript bundle made with <em>Depack</em>. It will also now show an error if a page does not exist, and produce better JSX code highlighting with Prism, since highlightjs does not work with JSX.
             </p>
             
-            <p class="Figure">
-                <img src="img/2019/2-feb/appshot-Safari.gif" alt="Demo for @depack/router" /><br />
-                
-              View the demo at <a href="https://dpck.github.io/router/">https://dpck.github.io/router/</a>
-            
-              </p>
+            <p class="Figure"><img src="img/2019/2-feb/appshot-Safari.gif" alt="Demo for @depack/router" /><br />View the demo at <a href="https://dpck.github.io/router/">https://dpck.github.io/router/</a></p>
             
             <p>
             In addition, I integrated the <span class="tm">@idio/frontend</span> package into the <em>Idio Core</em> web server where it is possible to mount multiple frontend directories at once. There is an additional check to see if the pointed directory exists when starting the server. To sum up, the achievements of the day were moving most of the existing code into new packages, and integrating them into other tools (e.g., taking the router code out of <span class="tm">knedv.ru</span> website, putting it in a separate package and then installing that package into <span class="tm">knedv.ru</span> again). It is not always feasible to start making new packages straight away because when they need to be updated, the routine is more complicated when compared to the situation where the code is kept in the same package, but when the code has been somewhat manually tested, it can be made into separate software.
@@ -224,11 +192,7 @@ render(h(Router,{},<span class="hljs-string">`
              <li>Come up with a web-interface where dependencies can be updated quickly, e.g., if I update <span class="tm">@a-la/jsx</span>, then <span class="tm">@idio/frontend</span> needs to be updated so that <span class="tm">@idio/core</span> can access the new feature or bugfix in the JSX. This is a requirement for <em>Moderne</em>, however can be implemented in MNPJS.org as well.</li>
             </ul>
             
-            <p class="SectionBreak">
-              <a href="#top" title="Back To Top">
-                <img src="section-breaks/4.svg" alt="Back To Top">
-              </a>
-            </p>
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/4.svg" alt="Back To Top" /></a></p>
         </div>
         </div>
         <footer>

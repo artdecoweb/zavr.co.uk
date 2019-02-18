@@ -28,6 +28,22 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Launch Splendid",
+      "program": "${workspaceFolder}/node_modules/splendid/src/bin/index.js",
+      "env": {
+        "NODE_DEBUG": "splendid",
+      },
+      "console": "integratedTerminal",
+      "args": [
+        "-s",
+      ],
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch Example",
       "program": "${workspaceFolder}/example/index.js",
       "env": {
