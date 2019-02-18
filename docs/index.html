@@ -26,6 +26,128 @@
             
             <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/-3.svg" alt="Back To Top" /></a></p>
             
+            <h2>17 Sunday</h2>
+            
+            <p>On Sunday, I wanted to document using <em>Depack/Render</em> on a server for server-side-rendering, like the original <a href="https://github.com/developit/preact-render-to-string/#render-jsx--preact--whatever-via-express"><em>Preact</em> documentation</a> does for Express. I also added the <span class="tm">doctype</span> option that would automatically add <span class="tm2">&lt;!doctype html&gt;</span> at the beginning of the rendered string, and fixed a JSDoc bug due to incorrect typedef name in the config, that prevented developers from seeing the correct property expansion on the <span class="tm">Config</span> property, which was at some point renamed to be <span class="tm">RenderConfig</span>. The types directory also had to be published because the types were to be used in another package called <em>Depack/Context</em> used for testing of front-end components.</p>
+            
+            <p><em>Depack/Context</em>'s job is to take the JSX source code from the mask, transform it into HTML and compare the expected output of the mask. The two packages used for that are <em>ÀLa/JSX</em> to compile the source into <strong>h</strong> pragma invocations by Preact, and <em>Depack/Render</em> to render the invocations into actual HTML. The <em>Depack/Render</em> is also tested with the JSX context, but using the source <span class="tm">render</span> function rather the one provided by the context. The context and render packages had to be linked because they depend on each other, however after <em>Depack/Render</em> is released and used in <em>Depack/Context</em>, it does not need releasing even after the context version is increased since it's only a dev dependency, otherwise there would be an infinite race to increase versions of these two packages. Finally, I also tested the <em>Depack/Form</em> component with the context, which will now be the standard way to mask test components. The context is similar to the snapshot testing, however with the advantage of not having to write a test logic for each input.
+            </p>
+            
+            <pre class="language-jsx"><code class="language-jsx"><span class="token comment">// returns the correct output</span>
+<span class="token operator">&lt;</span>Form<span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>Form<span class="token operator">></span>
+
+<span class="token comment">/* expected */</span>
+<span class="token operator">&lt;</span>form<span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>form<span class="token operator">></span>
+<span class="token comment">/**/</span>
+
+<span class="token comment">// creates FormGroup</span>
+<span class="token operator">&lt;</span>FormGroup label<span class="token operator">=</span><span class="token string">"test"</span> help<span class="token operator">=</span><span class="token string">"ok"</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span>Input placeholder<span class="token operator">=</span><span class="token string">"test"</span><span class="token operator">/</span><span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>FormGroup<span class="token operator">></span>
+
+<span class="token comment">/* expected */</span>
+<span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"form-group"</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span>label htmlFor<span class="token operator">=</span><span class="token string">"i70984"</span><span class="token operator">></span>test<span class="token operator">&lt;</span><span class="token operator">/</span>label<span class="token operator">></span>
+  <span class="token operator">&lt;</span>input placeholder<span class="token operator">=</span><span class="token string">"test"</span>
+    <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"form-control"</span> type<span class="token operator">=</span><span class="token string">"text"</span>
+    aria<span class="token operator">-</span>describedby<span class="token operator">=</span><span class="token string">"hi70984"</span> id<span class="token operator">=</span><span class="token string">"i70984"</span> <span class="token operator">/</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span>small id<span class="token operator">=</span><span class="token string">"hi70984"</span>
+    <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"form-text text-muted"</span><span class="token operator">></span>ok
+  <span class="token operator">&lt;</span><span class="token operator">/</span>small<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+<span class="token comment">/**/</span></code></pre>
+            
+            Lastly, one interesting feature is passing the references to the components used in masks' JSX input, which enables testing of the built components with the <span class="tm">test-build</span> command.
+            
+            <pre><code class="js hljs"><span class="hljs-keyword">import</span> Form, { FormGroup, Input } <span class="hljs-keyword">from</span> <span class="hljs-string">'../../src'</span>
+<span class="hljs-comment">// during the `test-build`:            '../../build'</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> makeTestSuite(<span class="hljs-string">'test/result/index.jsx'</span>, {
+  <span class="hljs-comment">/**
+   * @param {string} input
+   * @param {JSXContext} context
+   */</span>
+  getResults(input, { getVNode, render }) {
+    <span class="hljs-keyword">const</span> vnode = getVNode(input, {
+      Form, FormGroup, Input, <span class="hljs-comment">// PASS THE SOURCE COMPONENTS</span>
+    })
+    <span class="hljs-keyword">const</span> res = render(vnode, {
+      <span class="hljs-attr">pretty</span>: <span class="hljs-literal">true</span>,
+    })
+    <span class="hljs-keyword">return</span> res
+  },
+}</code></pre>
+            
+            The good thing about test contexts, as always, is that they provide accessible <strong>JSDoc</strong> documentation for the testing API that they provide.
+            
+            <img src="img/2019/2-feb/appshot-Code-form.gif" style="padding: 1rem 0;">
+            
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/0.svg" alt="Back To Top" /></a></p>
+            
+            <h2>16 Saturday</h2>
+            
+            Saturday involved finishing off updating the <em>ContextTesting/Fork</em> logic to perform the mask testing where mask's properties would be passed to the fork config generator functions such as <span class="tm">getArgs</span> and <span class="tm">getOptions</span>. In addition, I added the appropriate documentation to the <span class="tm">fork</span> package with the example of how to use it. I then published it, integrated into <em>Zoroaster</em> so that the tests I wrote the previous day started to pass and used the newer version to test <em>ÀLaMode</em> which confirmed the fork context logic to work correctly.
+            
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/1.svg" alt="Back To Top" /></a></p>
+            
+            <h2>15 Friday</h2>
+            
+            Friday was documenting <em>Depack/Render</em> to give examples of both standard and pretty rendering. The default line length was also reduced from 80 to 40 and documented easily with <em>Documentary</em> by updating the <span class="tm2">types/index.xml</span> file. There was also the task of updating the docs for <em>Depack/Form</em>, but because <a href="https://npmjs.com/package/alamode" class="Badge"><span class="name"><em>ÀLaMode</em></span><span class="version">1.8.1</span></a> was not updated to include bugfixes in <em>À-La/JSX</em> I had to release the new version that would render the boolean attributes used in forms correctly (e.g., <span class="tm">&lt;option selected&gt;</span> instead of <span class="tm">&lt;option selected=&quot;true&quot;&gt;</span>). However instead of just upping the versions of node_modules
+            , I wanted to contribute to the Quality Assurance of the package and implemented a test for the require hook that transpiles JSX. Previously, there were no tests for such functionality and it was a slight challenge to understand how to test it. The method chosen to do that is via forks to make sure that the <span class="tm">require</span> function is "fresh" for every test &mdash; otherwise it's a function with side-effects such as caching, so there's a possibility that tests would produce an incorrect result. To mask test <span class="tm">require</span> via a fork, the input from the mask is taken and put in a temp JSX file using <em>TempContext</em>, which is then required by the tests. The input then also prints the function which is contained in it and which will be transpiled by the hook if everything goes right.
+            
+            <pre><code class="js hljs"><span class="hljs-comment">// The mask test setup.</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> jsx = makeTestSuite(<span class="hljs-string">'test/result/jsx.js'</span>, {
+  <span class="hljs-attr">fork</span>: {
+    <span class="hljs-attr">module</span>: <span class="hljs-string">'test/fixture/require'</span>,
+    <span class="hljs-comment">/**
+     * @param {TempContext} t
+     */</span>
+    <span class="hljs-keyword">async</span> getOptions({ write }) {
+      <span class="hljs-keyword">const</span> p = <span class="hljs-keyword">await</span> write(<span class="hljs-string">'temp.jsx'</span>, <span class="hljs-keyword">this</span>.input)
+      <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">env</span>: {
+          <span class="hljs-attr">MODULE_PATH</span>: resolve(p),
+        },
+      }
+    },
+  },
+  <span class="hljs-attr">context</span>: TempContext,
+  <span class="hljs-attr">jsonProps</span>: [<span class="hljs-string">'expected'</span>],
+})</code></pre>
+            
+            <pre class="language-jsx"><code class="language-jsx"><span class="token comment">// The mask result: transpiles jsx with the require hood</span>
+<span class="token keyword">function</span> <span class="token function">App</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>div className<span class="token operator">=</span><span class="token string">"test"</span><span class="token operator">></span>
+      Hello World
+    <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token punctuation">{</span> App <span class="token punctuation">}</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>App<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment">/* stdout */</span>
+<span class="token keyword">function</span> <span class="token function">App</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token function">h</span><span class="token punctuation">(</span><span class="token string">'div'</span><span class="token punctuation">,</span><span class="token punctuation">{</span>className<span class="token punctuation">:</span><span class="token string">"test"</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token template-string"><span class="token string">`Hello World`</span></span>
+    <span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/**/</span></code></pre>
+            
+            The idea for mask testing that I had was only possible with some changes to <em>Zoroaster</em>, because there was no way to access the <span class="tm">input</span> property from the fork config's <span class="tm">getOptions</span> method, and I planned previously to update the Mask API to access this and other properties, so I added the tests for <em>Zoroaster</em> which would start passing as soon as I updated <em>ContextTesting/Fork</em>.
+            
+            <h3>ToDo</h3>
+            
+            <div><input id="5959" type="checkbox" /> <label for="5959">Create the fork of <span class="tm">pirates</span> which assigns require hooks, but is transpiled with <em>Babel</em> so that it is not possible to use it with <em>Depack</em>.</label></div>
+            <div><input id="2259" type="checkbox" /> <label for="2259">Compile <em>ÀLaMode</em> with <em>Depack</em>.</label></div>
+            
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/2.svg" alt="Back To Top" /></a></p>
+            
             <h2>14 Thursday</h2>
             
             First thing on Thursday was refactoring some components in <em>Splendid</em> into being JSX components, including the <span class="tm2">&lt;SectionBreak/&gt;</span>, <span class="tm2">&lt;File/&gt;</span> and <span class="tm2">&lt;PageTitle/&gt;</span>. The new architecture to use JSX is better than simple regular expressions, because it's more idiosyncratic and could eventually help to write components for dynamic front-end as well, such as embedding them with <em>Preact</em>. It's also easier to maintain and document, however there is still an issue that the autosuggestions for component properties do not appear in the pages source code, however this could only be overcome by making all pages JSX components which is opposite to the goal of <em>Splendid</em> that allows to write simple HTML and markdown but embed components. Nonetheless, the new components looks much better, compare:
@@ -73,11 +195,13 @@
             
             <a href="https://github.com/a-la/jsx/commit/d76d56b5f318a14523053fb3a7afe9ef081c55ba"><img src="img/2019/2-feb/git.jpg" /></a>
             
-            <div><input id="5704" type="checkbox" /> <label for="5704">When counting the line length in <em>Depack/Render</em>, the whitespace before the line should also be considered.</label></div>
-            <div><input id="4379" type="checkbox" /> <label for="4379">Load CSS from components' source code into the page source.</label></div>
-            <div><input id="5629" type="checkbox" /> <label for="5629">Write documentation for <em>Splendid</em> components.</label></div>
+            <h3>ToDo</h3>
             
-            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/0.svg" alt="Back To Top" /></a></p>
+            <div><input id="2930" type="checkbox" /> <label for="2930">When counting the line length in <em>Depack/Render</em>, the whitespace before the line should also be considered.</label></div>
+            <div><input id="8095" type="checkbox" /> <label for="8095">Load CSS from components' source code into the page source.</label></div>
+            <div><input id="7848" type="checkbox" /> <label for="7848">Write documentation for <em>Splendid</em> components.</label></div>
+            
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/3.svg" alt="Back To Top" /></a></p>
             
             <h2>13 Wednesday</h2>
             
@@ -91,10 +215,12 @@
             
             <p class="Figure"><img src="img/2019/2-feb/appshot-Chrome-kibana.gif" alt="Kibana Logs For Logarithm" /><br /><em>Logarithm</em> Middleware sends data about requests to the ElasticSearch. The portal is implemented as patched OSS <a href="https://github.com/dockspage/kibana-docker">Kibana with authentication</a>.</p>
             
-            <div><input id="7708" type="checkbox" /> <label for="7708">Make an interactive component for <span class="tm">NPMBadge</span> that would show package information on hover (or do it with CSS).</label></div>
-            <div><input id="7678" type="checkbox" /> <label for="7678">Update <em>Logarithm</em> to understand encoded characters.</label></div>
+            <h3>ToDo</h3>
             
-            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/1.svg" alt="Back To Top" /></a></p>
+            <div><input id="443" type="checkbox" /> <label for="443">Make an interactive component for <span class="tm">NPMBadge</span> that would show package information on hover (or do it with CSS).</label></div>
+            <div><input id="3462" type="checkbox" /> <label for="3462">Update <em>Logarithm</em> to understand encoded characters.</label></div>
+            
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/4.svg" alt="Back To Top" /></a></p>
             
             <h2>12 Tuesday</h2>
             
@@ -129,10 +255,10 @@
             
             <h2>ToDo</h2>
             
-            <div><input id="128" type="checkbox" /> <label for="128">Make it possible to generate modules to put on the static HTML server such as GitHub pages with Depack without bundling them into a single file. This includes supplying imports like <span class="tm">preact</span> with the source code in a separate file, as well is updating relative paths. This is partly what generating the temp directory does already.</label></div>
-            <div><input id="6907" type="checkbox" /> <label for="6907">Teach <em>Splendid</em> to extract <span class="tm">&lt;Scripts&gt;</span> components to make it work better with Ajax by updating the <span class="tm">ajax</span> version of generated pages to have the <span class="tm">scripts</span> field in addition to the page's in-container <span class="tm">source</span> and <span class="tm">title</span>.</label></div>
+            <div><input id="7075" type="checkbox" /> <label for="7075">Make it possible to generate modules to put on the static HTML server such as GitHub pages with Depack without bundling them into a single file. This includes supplying imports like <span class="tm">preact</span> with the source code in a separate file, as well is updating relative paths. This is partly what generating the temp directory does already.</label></div>
+            <div><input id="8884" type="checkbox" /> <label for="8884">Teach <em>Splendid</em> to extract <span class="tm">&lt;Scripts&gt;</span> components to make it work better with Ajax by updating the <span class="tm">ajax</span> version of generated pages to have the <span class="tm">scripts</span> field in addition to the page's in-container <span class="tm">source</span> and <span class="tm">title</span>.</label></div>
             
-            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/2.svg" alt="Back To Top" /></a></p>
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/5.svg" alt="Back To Top" /></a></p>
             
             
             <h2>11 Monday</h2>
@@ -226,7 +352,7 @@
             <li>Add an article on Medium about how to add JSDoc for Preact class components without using TypeScript.</li>
             </ul>
             
-            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/3.svg" alt="Back To Top" /></a></p>
+            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/6.svg" alt="Back To Top" /></a></p>
         </div>
         </div>
         <footer>
