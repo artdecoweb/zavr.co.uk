@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "start": "splendid-dev -s",
-    "build": "splendid-dev",
+    "start": "splendid-dev splendid.js -s",
+    "build": "splendid-dev splendid.js",
     "e": "node example"
   },
   "devDependencies": {

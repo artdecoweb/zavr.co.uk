@@ -1,6 +1,6 @@
 import { join } from 'path'
 
-const APP_DIR = 'splendid'
+const APP_DIR = '.'
 const PAGES_DIR = join(APP_DIR, 'pages')
 const BUILD_DIR = 'docs'
 
