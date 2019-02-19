@@ -1,37 +1,37 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <title>zavr blog</title>
-        <link href="styles/app.css" rel="stylesheet">
-        <link href="styles/default.css" rel="stylesheet">
-        <link href="styles/prism.css" rel="stylesheet">
-        <link href="img/favicon.png" rel="shortcut icon">
-        <link href="https://fonts.googleapis.com/css?family=Ruda" rel="stylesheet">
-      <link href="loaders/inner-circles.css" rel="stylesheet">
-    </head>
-    <body>
-        <span class="inner-circles-loader" style="display:none;" id="SplendidLoader">Loading...</span>
-        <div class="table">
-        <div class="left-column">
-            <img src="img/zavr.jpg" alt="Zavr"/>
-            <h1>Zavr.co.uk 2019</h1>
+  <head>
+    <title>zavr blog</title>
+    <link href="styles/app.css" rel="stylesheet">
+    <link href="styles/default.css" rel="stylesheet">
+    <link href="styles/prism.css" rel="stylesheet">
+    <link href="img/favicon.png" rel="shortcut icon">
+    <link href="https://fonts.googleapis.com/css?family=Ruda" rel="stylesheet">
+    <link href="loaders/inner-circles.css" rel="stylesheet">
+  </head>
+  <body>
+    <span class="inner-circles-loader" style="display:none;" id="SplendidLoader">Loading...</span>
+    <div class="table">
+    <div class="left-column">
+      <img src="img/zavr.jpg" alt="Zavr"/>
+      <h1>Zavr.co.uk 2019</h1>
 
-            <p>This is a javascript.dev blog.</p>
-            <ul class="AjaxNav"><li class="Active"><a data-file="18-24-february" href="/">zavr blog</a></li><li class><a data-file="11-17-february" href="11-17-february.html">11-17 February 2019</a></li><li class><a data-file="4-10-february" href="4-10-february.html">4-10 February 2019</a></li></ul>
-        </div>
-        <div class="right-column" id="Content">
-            <h2>18-24 February</h2>
-            
-            This week will involve more work on the <span class="tm2">knedv.ru</span> website, to fill up the realty catalogue, enable the search via synchronising <em>MongoDB</em> with <em>ElasticSearch</em> and building and documenting the admin front-end. There is a plan to start the <a href="https://contexttesting.com">contexttesting.com</a> website and write articles describing how to use <em>Zoroaster</em> for context testing.
-            
-            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/-3.svg" alt="Back To Top" /></a></p>
-            <!-- <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/0.svg" alt="Back To Top" /></a></p> -->
-            
-            <h2>18 Monday</h2>
-            
-            Today I've spent some time on testing the new <em>Splendid</em> components that were translated from RegExp rules with <em>Zoroaster</em>. This required an update to the latter as well to pass the mask properties not only to fork configurators (as last week), but to all constructors, including <span class="tm">getResults</span>, <span class="tm">getTransform</span> and others. This was needed to set the <span class="tm">page</span> properties on the test to enable rendering of the <span class="tm">&lt;PageTitle&gt;</span> component that accessed <span class="tm">splendid.page</span> property, so that when set within the mask result and not the mask itself, tests become much more flexible since the input properties can be controlled from each test case rather than the mask constructor.
-            
-            <pre><code class="js hljs"><span class="hljs-comment">// Mask Definition</span>
+      <p>This is a javascript.dev blog.</p>
+      <ul class="AjaxNav"><li class="Active"><a data-file="18-24-february" href="/">zavr blog</a></li><li class><a data-file="11-17-february" href="11-17-february.html">11-17 February 2019</a></li><li class><a data-file="4-10-february" href="4-10-february.html">4-10 February 2019</a></li></ul>
+    </div>
+    <div class="right-column" id="Content">
+      <h2>18-24 February</h2>
+      
+      This week will involve more work on the <span class="tm2">knedv.ru</span> website, to fill up the realty catalogue, enable the search via synchronising <em>MongoDB</em> with <em>ElasticSearch</em> and building and documenting the admin front-end. There is a plan to start the <a href="https://contexttesting.com">contexttesting.com</a> website and write articles describing how to use <em>Zoroaster</em> for context testing.
+      
+      <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/-3.svg" alt="Back To Top" /></a></p>
+      <!-- <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/0.svg" alt="Back To Top" /></a></p> -->
+      
+      <h2>18 Monday</h2>
+      
+      Today I've spent some time on testing the new <em>Splendid</em> components that were translated from RegExp rules with <em>Zoroaster</em>. This required an update to the latter as well to pass the mask properties not only to fork configurators (as last week), but to all constructors, including <span class="tm">getResults</span>, <span class="tm">getTransform</span> and others. This was needed to set the <span class="tm">page</span> properties on the test to enable rendering of the <span class="tm">&lt;PageTitle&gt;</span> component that accessed <span class="tm">splendid.page</span> property, so that when set within the mask result and not the mask itself, tests become much more flexible since the input properties can be controlled from each test case rather than the mask constructor.
+      
+      <pre><code class="js hljs"><span class="hljs-comment">// Mask Definition</span>
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> makeTestSuite(<span class="hljs-string">'test/result/components/index.html'</span>, {
   getTransform() {
     <span class="hljs-keyword">const</span> { page } = <span class="hljs-keyword">this</span>
@@ -43,8 +43,8 @@
   },
   <span class="hljs-attr">jsonProps</span>: [<span class="hljs-string">'page'</span>],
 })</code></pre>
-            
-            <pre class="language-jsx"><code class="language-jsx"><span class="token comment">// Mask Result: adds page title</span>
+      
+      <pre class="language-jsx"><code class="language-jsx"><span class="token comment">// Mask Result: adds page title</span>
 <span class="token operator">&lt;</span>PageTitle <span class="token operator">/</span><span class="token operator">></span>
 
 <span class="token comment">/* page */</span>
@@ -54,18 +54,18 @@
 <span class="token comment">/* expected */</span>
 <span class="token operator">&lt;</span>title<span class="token operator">></span>Page<span class="token operator">&lt;</span><span class="token operator">/</span>title<span class="token operator">></span>
 <span class="token comment">/**/</span></code></pre>
-            
-            I've also tested the <span class="tm">&lt;File&gt;</span> component with <em>TempContext</em> which wrote the specified file into the <span class="tm">test/temp</span> directory and read it at the end of the test to make sure that the file is correctly copied. Meanwhile, I worked on the <span class="tm2">zavr.co.uk</span> website to catch up with the writing for the previous week. I've been sloppy on blogging last week however it's become really important to see what I've done rather than to just allow work to silently accumulated. It also helps to accumulate new use-cases and features for <em>Splendid</em>.
-            
-            <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/0.svg" alt="Back To Top" /></a></p>
-            
-        </div>
-        </div>
-        <footer>
-            &copy; <a href="https://zavr.co.uk">Zavr</a>, 2019
-        </footer>
-        <script src="js/main.js"></script>
-      <script src="js/ajax-loader.js"></script>
-      <script>window.AjaxLoader()</script>
-    </body>
+      
+      I've also tested the <span class="tm">&lt;File&gt;</span> component with <em>TempContext</em> which wrote the specified file into the <span class="tm">test/temp</span> directory and read it at the end of the test to make sure that the file is correctly copied. Meanwhile, I worked on the <span class="tm2">zavr.co.uk</span> website to catch up with the writing for the previous week. I've been sloppy on blogging last week however it's become really important to see what I've done rather than to just allow work to silently accumulated. It also helps to accumulate new use-cases and features for <em>Splendid</em>.
+      
+      <p class="SectionBreak"><a href="#top" title="Back To Top"><img src="section-breaks/0.svg" alt="Back To Top" /></a></p>
+      
+    </div>
+    </div>
+    <footer>
+      &copy; <a href="https://zavr.co.uk">Zavr</a>, 2019
+    </footer>
+    <script src="js/main.js"></script>
+    <script src="js/ajax-loader.js"></script>
+    <script>window.AjaxLoader()</script>
+  </body>
 </html>

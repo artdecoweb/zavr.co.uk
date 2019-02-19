@@ -1,30 +1,30 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <PageTitle/>
-        <link href="styles/app.css" rel="stylesheet">
-        <link href="styles/default.css" rel="stylesheet">
-        <link href="styles/prism.css" rel="stylesheet">
-        <link href="img/favicon.png" rel="shortcut icon">
-        <link href="https://fonts.googleapis.com/css?family=Ruda" rel="stylesheet">
-    </head>
-    <body>
-        <Loader />
-        <div class="table">
-        <div class="left-column">
-            <img src="img/zavr.jpg" alt="Zavr"/>
-            # Zavr.co.uk 2019
+  <head>
+    <PageTitle/>
+    <link href="styles/app.css" rel="stylesheet">
+    <link href="styles/default.css" rel="stylesheet">
+    <link href="styles/prism.css" rel="stylesheet">
+    <link href="img/favicon.png" rel="shortcut icon">
+    <link href="https://fonts.googleapis.com/css?family=Ruda" rel="stylesheet">
+  </head>
+  <body>
+    <Loader />
+    <div class="table">
+    <div class="left-column">
+      <img src="img/zavr.jpg" alt="Zavr"/>
+      # Zavr.co.uk 2019
 
-            <p>This is a javascript.dev blog.</p>
-            <Pages />
-        </div>
-        <div class="right-column" id="Content">
-            {{ content }}
-        </div>
-        </div>
-        <footer>
-            &copy; {{ company }}, {{ year }}
-        </footer>
-        <script src="js/main.js"></script>
-    </body>
+      <p>This is a javascript.dev blog.</p>
+      <Pages />
+    </div>
+    <div class="right-column" id="Content">
+      {{ content }}
+    </div>
+    </div>
+    <footer>
+      &copy; {{ company }}, <Year />
+    </footer>
+    <script src="js/main.js"></script>
+  </body>
 </html>
