@@ -1,4 +1,9 @@
 export { default as Pages } from './Menu'
+let seed = 1
+const random = () => {
+  var x = Math.sin(seed++) * 10000
+  return Math.floor((x - Math.floor(x)) * 10000)
+}
 
 export const Figure = ({ img, alt, children }) => {
   return <p className="Figure">
@@ -8,7 +13,7 @@ export const Figure = ({ img, alt, children }) => {
 }
 
 export const ToDo = ({ children }) => {
-  const id = Math.floor(Math.random() * 10000)
+  const id = `i${random()}`
   const i = (<div>
     <input id={id} type="checkbox" ></input> <label for={id}>{children}</label>
   </div>)
