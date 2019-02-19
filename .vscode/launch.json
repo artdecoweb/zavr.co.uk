@@ -35,6 +35,7 @@
       },
       "console": "integratedTerminal",
       "args": [
+        "splendid.js",
         "-s",
       ],
       "skipFiles": [
