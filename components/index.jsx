@@ -15,7 +15,7 @@ export const Figure = ({ img, alt, children }) => {
 export const ToDo = ({ children }) => {
   const id = `i${random()}`
   const i = (<div>
-    <input id={id} type="checkbox" ></input> <label for={id}>{children}</label>
+    <input id={id} type="checkbox" ></input> <label htmlFor={id}>{children}</label>
   </div>)
   return i
 }
